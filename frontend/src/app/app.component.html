@@ -1,20 +1,104 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container-fluid" style="font-size:10px;">
+  <!-- <div class="row justify-content-md-center">
+        <h1 class="">=========</h1>
+        <h1 class="">CRUD</h1>
+        <h1 class="">=========</h1>
+  </div> -->
+  <h4 class="">CRUD</h4>
+  <div class="row">
+    <div class="col-sm-3">
+      <form>
+        <div class="form-group">
+          <label for="fullName">Full name:  </label>
+          <input type="fullName" class="form-control" id="fullName" required>
+        </div>
+        <div class="form-group">
+          <label for="gender">Sex:  </label><br>
+         <div class="form-check-inline">
+           <label class="form-check-label" for="radio1">
+             <input type="radio" class="form-check-input" id="radio1" name="optradio" value="option1">Male
+           </label>
+         </div>
+         <div class="form-check-inline">
+           <label class="form-check-label" for="radio2">
+             <input type="radio" class="form-check-input" id="radio2" name="optradio" value="option2">Female
+           </label>
+         </div>
+       </div>
+       <div class="form-group">
+         <label for="birthDate">Birth date:  </label>
+         <input type="text" class="form-control datepicker" id="birthDate" required>
+       </div>
+        <div class="form-group">
+          <label for="email">Email address:  </label>
+          <input type="email" class="form-control" id="email" required>
+        </div>
+         <div class="form-group">
+           <label for="mobile">Mobile:  </label>
+           <input type="number" maxlength="10" minlength="10" class="form-control" id="mobile" required>
+         </div>
+         <div class="form-group">
+           <label for="continent">Continent:  </label>
+           <select name="continent" class="form-control">
+            <option value="">------------</option>
+            <option value="audi">Russia</option>
+            <option value="audi">Europe</option>
+            <option value="volvo">Asia</option>
+            <option value="fiat">Africa</option>
+            <option value="audi">America</option>
+          </select>
+        </div>
 
+        <div class="form-group">
+          <label for="continent">Skills:  </label><br>
+          <div class="form-check-inline">
+           <label class="form-check-label">
+             <input type="checkbox" class="form-check-input" value="">FullStack
+           </label>
+         </div>
+         <div class="form-check-inline">
+           <label class="form-check-label">
+             <input type="checkbox" class="form-check-input" value="">JokerEngineer
+           </label>
+         </div>
+         <div class="form-check-inline disabled">
+           <label class="form-check-label">
+             <input type="checkbox" class="form-check-input" value="">SDLC
+           </label>
+         </div>
+       </div>
+
+
+        <div class="form-group">
+          <label for="photo">Photo:  </label>
+          <input type="file" class="form-control-file border" name="photo" id="photo">
+        </div>
+       <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div class="col-sm-9">
+      <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Fullname</th>
+            <th>Sex</th>
+            <th>Birthdate</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Continent</th>
+            <th>Skills</th>
+            <th>Photo</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
