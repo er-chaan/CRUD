@@ -8,7 +8,10 @@
   <h4 class="">CRUD</h4>
   <div class="row">
     <div class="col-sm-3">
-      <form [formGroup]="registrationForm">
+      <div class="alert alert-danger" *ngIf="errorMsg">
+        {{errorMsg}}
+      </div>
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="fullName">Full name:  </label>
           <input [class.is-invalid]="fullName.invalid && fullName.touched" formControlName="fullName" type="text" class="form-control" required>
@@ -35,30 +38,31 @@
        </div>
        <div class="form-group">
          <label for="birthDate">Birth date:  </label>
-         <input type="text" formControlName="birthDate" data-date-format="yyyy-mm-dd" class="form-control" data-provide="datepicker" required>
+         <input [class.is-invalid]="birthDate.invalid && birthDate.touched" type="text" formControlName="birthDate" data-date-format="yyyy-mm-dd" class="form-control" data-provide="datepicker" required>
          <div *ngIf="birthDate.invalid && birthDate.touched">
            <small *ngIf="birthDate.errors?.required" class="text-danger">Birthdate is required</small>
          </div>
        </div>
         <div class="form-group">
           <label for="email">Email address:  </label>
-          <input type="email" formControlName="email" class="form-control" required>
+          <input [class.is-invalid]="email.invalid && email.touched" type="email" formControlName="email" class="form-control" required>
           <div *ngIf="email.invalid && email.touched">
             <small *ngIf="email.errors?.required" class="text-danger">Email is required</small>
             <small *ngIf="email.errors?.email" class="text-danger">Invalid email</small>
+            <small *ngIf="email.errors?.pattern" class="text-danger">Invalid email</small>
           </div>
         </div>
          <div class="form-group">
            <label for="mobile">Mobile:  </label>
-           <input type="number" formControlName="mobile" class="form-control" required>
+           <input [class.is-invalid]="mobile.invalid && mobile.touched" type="text" formControlName="mobile" class="form-control" required>
            <div *ngIf="mobile.invalid && mobile.touched">
              <small *ngIf="mobile.errors?.required" class="text-danger">Mobile number is required</small>
-             <small *ngIf="mobile.errors?.minLength || mobile.errors?.maxLength" class="text-danger">Invalid mobile</small>
+             <small *ngIf="mobile.errors?.pattern" class="text-danger">Invalid mobile</small>
            </div>
          </div>
          <div class="form-group">
            <label for="continent">Continent:  </label>
-           <select name="continent" formControlName="continent" class="form-control" required>
+           <select [class.is-invalid]="continent.invalid && continent.touched" name="continent" formControlName="continent" class="form-control" required>
             <option value=""></option>
             <option value="Russia">Russia</option>
             <option value="Europe">Europe</option>
@@ -70,10 +74,6 @@
             <small *ngIf="continent.errors?.required" class="text-danger">Continent is required</small>
           </div>
         </div>
-
-
-        <!-- <input type="checkbox" formControlName="FullStack" class="form-check-input" value="FullStack" name="FullStack" >FullStack -->
-
         <div formGroupName="skills">
           <label for="skills">Skills:  </label><br>
           <div class="form-check-inline">
@@ -92,17 +92,15 @@
            </label>
          </div>
        </div>
-
         <div class="form-group">
           <label for="photo">Photo:  </label>
-          <input type="file" formControlName="photo" class="form-control-file border" name="photo">
+          <input [class.is-invalid]="photo.invalid && photo.touched" type="file" formControlName="photo" class="form-control-file border" name="photo">
           <div *ngIf="photo.invalid && photo.touched">
             <small *ngIf="photo.errors?.required" class="text-danger">Photo is required</small>
           </div>
         </div>
-       <button type="submit" class="btn btn-primary">Submit</button>
+       <button [disabled]='!registrationForm.valid' type="submit" class="btn btn-primary">Submit</button>
       </form>
-
     </div>
     <div class="col-sm-9">
       <div class="table-responsive">

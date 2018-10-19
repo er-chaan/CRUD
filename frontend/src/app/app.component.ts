@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 // import { FormGroup, FormControl } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ApiCallsService } from './api-calls.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 export class AppComponent {
 
-  constructor(private fb:FormBuilder){}
+  errorMsg = '';
+
+  constructor(private fb:FormBuilder, private _apiCallsService: ApiCallsService){}
 
   get fullName() {
     return this.registrationForm.get('fullName');
@@ -41,8 +44,8 @@ export class AppComponent {
     fullName: ['', [Validators.required, Validators.minLength(8)]],
     sex: ['', Validators.required],
     birthDate: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email, /*Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')*/ ] ],
-    mobile: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10) /*Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')*/] ],
+    email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$') ] ],
+    mobile: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')] ],
     continent: ['', Validators.required],
     skills: this.fb.group({
       FullStack: [''],
@@ -66,5 +69,15 @@ export class AppComponent {
   //   }),
   //   photo: new FormControl(''),
   // });
+
+  onSubmit() {
+    // console.log(this.registrationForm.value);
+    this._apiCallsService.createEntry(this.registrationForm.value).
+      subscribe(
+        response => console.log('Success!', response),
+        // error => console.log('Error!', error)
+        error => this.errorMsg = error.statusText;
+      );
+  }
 
 }
