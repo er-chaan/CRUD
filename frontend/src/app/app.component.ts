@@ -48,9 +48,9 @@ export class AppComponent {
     mobile: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')] ],
     continent: ['', Validators.required],
     skills: this.fb.group({
-      FullStack: [''],
-      JokerEngineer: [''],
-      SDLC: [''],
+      FullStack: [false],
+      JokerEngineer: [false],
+      SDLC: [false],
     }),
     photo: ['', Validators.required]
   });
