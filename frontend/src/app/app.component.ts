@@ -52,12 +52,19 @@ export class AppComponent {
       JokerEngineer: [false],
       SDLC: [false],
     }),
-    photo: ['', Validators.required]
+    photo: ['', [Validators.required, Validators.pattern('([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.jpeg)$')]]
   });
  
   selectedFile = null;
   onFileSelected(event){
     this.selectedFile = event.target.files[0];
+    // var ext = this.registrationForm.get("photo").value.split('.').pop();
+    // if(ext == "jpeg" || ext == "jpg" || ext == "png"){
+    //   return true;
+    // }else{
+    //   this.registrationForm.get("photo").setValue("");
+    //   return false;
+    // }
   }
 
   onSubmit() {
@@ -70,7 +77,6 @@ export class AppComponent {
         response => console.log('Success!', response),
         // error => console.log('Error!', error),
         error => {this.errorMsg = error.statusText;
-          alert(this.errorMsg);
                   if(this.errorMsg == "OK"){
                     this._apiCallsService.createEntry(this.registrationForm.value, headers).
                     subscribe(
@@ -84,10 +90,7 @@ export class AppComponent {
                   }
         }
       );
-      
-      if(call == "OK"){
-        
-      }
+    
   }
 
 }

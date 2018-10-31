@@ -36,15 +36,21 @@ class ControllerCRUD extends Controller
             'mobile'=>$mobile,
             'continent'=>$continent,
             'skills'=>$skillsSet,
-            'photo'=>$photo,
+            'photo'=>time().'_'.$photo,
             'status'=>$status]);
         return "success";
       }
       public function uploadImage(Request $request){
-        $photo = $request->file("photo")->getClientOriginalName();
-        // return $photo;exit;
-        return "success";
-        // return "200";
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $name = time().'_'.$request->file("photo")->getClientOriginalName();
+            $destinationPath = storage_path('/app/images');
+            $image->move($destinationPath, $name);
+            return "success";
+        }
+        else{
+            return false;
+        }
       }
       ////////////////////////////////////////
     public function getAPICallTracker(){

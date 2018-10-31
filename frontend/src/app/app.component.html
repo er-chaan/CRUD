@@ -11,10 +11,7 @@
       <div class="alert alert-success" *ngIf="errorMsg == 'OK'">
         {{errorMsg}}
       </div>
-      <div class="alert alert-danger" *ngIf="errorMsg != 'OK'">
-        {{errorMsg}}
-      </div>
-      <div class="alert alert-danger" *ngIf="errorMsg == 'x'">
+      <div class="alert alert-danger" *ngIf="errorMsg != 'OK' && errorMsg != 'x'">
         {{errorMsg}}
       </div>
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
@@ -103,6 +100,7 @@
           <input (change)="onFileSelected($event)" [class.is-invalid]="photo.invalid && photo.touched" type="file" formControlName="photo" class="form-control-file border" name="photo">
           <div *ngIf="photo.invalid && photo.touched">
             <small *ngIf="photo.errors?.required" class="text-danger">Photo is required</small>
+            <small *ngIf="photo.errors?.pattern" class="text-danger">Invalid photo</small>
           </div>
         </div>
        <button [disabled]='!registrationForm.valid' type="submit" class="btn btn-primary">Submit</button>
