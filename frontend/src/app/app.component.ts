@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 // import { FormGroup, FormControl } from '@angular/forms';
+import { Http, Headers } from '@angular/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ApiCallsService } from './api-calls.service';
+declare var jquery:any;
+declare var $ :any;
 
 @Component({
   selector: 'app-root',
@@ -11,7 +14,7 @@ import { ApiCallsService } from './api-calls.service';
 
 export class AppComponent {
 
-  errorMsg = '';
+  errorMsg = 'x';
 
   constructor(private fb:FormBuilder, private _apiCallsService: ApiCallsService){}
 
@@ -33,9 +36,6 @@ export class AppComponent {
   get continent() {
     return this.registrationForm.get('continent');
   }
-  // get skills() {
-  //   return this.registrationForm.get('fullName');
-  // }
   get photo() {
     return this.registrationForm.get('photo');
   }
@@ -54,30 +54,40 @@ export class AppComponent {
     }),
     photo: ['', Validators.required]
   });
-
-  // registrationForm = new FormGroup({
-  //   fullName: new FormControl(''),
-  //   sex: new FormControl(''),
-  //   birthDate: new FormControl(''),
-  //   email: new FormControl(''),
-  //   mobile: new FormControl(''),
-  //   continent: new FormControl(''),
-  //   skills: new FormGroup({
-  //     FullStack: new FormControl(''),
-  //     JokerEngineer: new FormControl(''),
-  //     SDLC: new FormControl('')
-  //   }),
-  //   photo: new FormControl(''),
-  // });
+ 
+  selectedFile = null;
+  onFileSelected(event){
+    this.selectedFile = event.target.files[0];
+  }
 
   onSubmit() {
-    // console.log(this.registrationForm.value);
-    this._apiCallsService.createEntry(this.registrationForm.value).
+    let inputFile = new FormData(); 
+    let headers = new Headers();
+    headers.append('Content-Type', 'multipart/form-data');
+    inputFile.append('photo', this.selectedFile);
+      this._apiCallsService.uploadImage(inputFile, headers).
       subscribe(
         response => console.log('Success!', response),
-        // error => console.log('Error!', error)
-        error => this.errorMsg = error.statusText;
+        // error => console.log('Error!', error),
+        error => {this.errorMsg = error.statusText;
+          alert(this.errorMsg);
+                  if(this.errorMsg == "OK"){
+                    this._apiCallsService.createEntry(this.registrationForm.value, headers).
+                    subscribe(
+                      response => console.log('Success!', response),
+                      // error => console.log('Error!', error)
+                      error => this.errorMsg = error.statusText
+                    );
+                  }
+                  else{
+                    this.errorMsg = error.statusText;
+                  }
+        }
       );
+      
+      if(call == "OK"){
+        
+      }
   }
 
 }

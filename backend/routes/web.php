@@ -14,3 +14,12 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['namespace' => 'CRUD'], function() use ($router){
+    // APICallTracker starts
+    // $router->get('getAPICallTracker','APICallTrackerController@getAPICallTracker');
+    // $router->get('changeAPICallSignal/{id}/{signal}/','APICallTrackerController@changeAPICallSignal');
+    $router->post('createEntry','ControllerCRUD@createEntry');
+    $router->post('uploadImage','ControllerCRUD@uploadImage');
+    // APICallTracker ends
+});
