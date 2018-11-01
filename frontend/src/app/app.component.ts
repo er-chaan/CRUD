@@ -68,11 +68,18 @@ export class AppComponent {
       FullStack: [false],
       JokerEngineer: [false],
       SDLC: [false],
+      OpenSource: [false]
     }),
     photo: ['', [Validators.required, Validators.pattern('([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.jpeg)$')]]
   });
  
   selectedFile = null;
+
+  formReset(){
+    this.registrationForm.reset();
+  }
+
+
   onFileSelected(event){
     this.selectedFile = event.target.files[0];
     // var ext = this.registrationForm.get("photo").value.split('.').pop();

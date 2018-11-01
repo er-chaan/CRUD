@@ -7,9 +7,10 @@
   <!-- {{registrationForm.value | json}} -->
   <h4 class="">CRUD</h4>
   <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-2">
       <div class="alert alert-success" *ngIf="errorMsg == 'OK'">
-        {{errorMsg}}
+        <!-- {{errorMsg}} -->
+        Success
       </div>
       <div class="alert alert-danger" *ngIf="errorMsg != 'OK' && errorMsg != 'x'">
         {{errorMsg}}
@@ -78,23 +79,17 @@
           </div>
         </div>
         <div formGroupName="skills">
-          <label for="skills">Skills:  </label><br>
-          <div class="form-check-inline">
-           <label class="form-check-label">
-             <input type="checkbox" formControlName="FullStack" class="form-check-input" name="FullStack" >FullStack
-           </label>
-         </div>
+          <label for="skills">Skills:  </label>
          <div class="form-check-inline">
            <label class="form-check-label">
+              <input type="checkbox" formControlName="FullStack" class="form-check-input" name="FullStack" >FullStack
              <input type="checkbox" formControlName="JokerEngineer" class="form-check-input" name="JokerEngineer" >JokerEngineer
-           </label>
-         </div>
-         <div class="form-check-inline">
-           <label class="form-check-label">
              <input type="checkbox" formControlName="SDLC" class="form-check-input" name="SDLC" >SDLC
-           </label>
+             <input type="checkbox" formControlName="OpenSource" class="form-check-input" name="OpenSource" >OpenSource
+            </label>
          </div>
        </div>
+       <br>
         <div class="form-group">
           <label for="photo">Photo:  </label>
           <input (change)="onFileSelected($event)" [class.is-invalid]="photo.invalid && photo.touched" type="file" formControlName="photo" class="form-control-file border" name="photo">
@@ -103,10 +98,12 @@
             <small *ngIf="photo.errors?.pattern" class="text-danger">Invalid photo</small>
           </div>
         </div>
-       <button [disabled]='!registrationForm.valid' type="submit" class="btn btn-primary">Submit</button>
+        <br>
+       <input [disabled]='!registrationForm.valid' type="submit" class="btn btn-primary" value="Submit" style="width:100%">
+       <input (click)="formReset()" class="btn btn-default" value="Reset" style="width:100%">
       </form>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-10">
       <div class="table-responsive">
       <table class="table">
         <thead>
@@ -133,8 +130,14 @@
             <td>{{data.mobile}}</td>
             <td>{{data.continent}}</td>
             <td>{{data.skills}}</td>
-            <td>{{data.photo}}</td>
-            <td>Action</td>
+            <td>
+                <img src="https://banner2.kisspng.com/20180612/wbe/kisspng-laravel-software-framework-php-web-framework-model-framework-5b1fe07e288525.324423641528815742166.jpg" alt="" title="" height="50" width="100" />
+                <!-- <img src="http://localhost:8000/app/images/{{data.photo}}" alt="" title="" height="100" width="100" /> -->
+            </td>
+            <td>
+                <button type="button" class="btn btn-warning btn-sm">Edit</button>&nbsp;&nbsp;   
+                <button type="button" class="btn btn-danger btn-sm">Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
