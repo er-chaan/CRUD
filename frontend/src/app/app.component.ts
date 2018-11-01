@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NgModule } from '@angular/core';
 // import { FormGroup, FormControl } from '@angular/forms';
 import { Http, Headers } from '@angular/http';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -15,8 +16,24 @@ declare var $ :any;
 export class AppComponent {
 
   errorMsg = 'x';
+  public retrievedData = [];
+  // retrievedData:any;
 
   constructor(private fb:FormBuilder, private _apiCallsService: ApiCallsService){}
+
+  ngOnInit() {
+    this.retrieveEntry();
+  //   this.loaderTrigger = true;
+  //   this.getPastProcessedMetadata();
+  //   this.getCurrentlyProcessingMetadata();
+  //   this.getKeysModalValues();
+  //   // this.loaderTrigger = false;
+  //   this.interval = setInterval(() => {
+  //       if(window.location.pathname == "/meta-data-reports"){
+  //           this.getCurrentlyProcessingMetadata();
+  //       }
+  //  }, 5000);
+}
 
   get fullName() {
     return this.registrationForm.get('fullName');
@@ -67,7 +84,7 @@ export class AppComponent {
     // }
   }
 
-  onSubmit() {
+  createEntry() {
     let inputFile = new FormData(); 
     let headers = new Headers();
     headers.append('Content-Type', 'multipart/form-data');
@@ -82,7 +99,14 @@ export class AppComponent {
                     subscribe(
                       response => console.log('Success!', response),
                       // error => console.log('Error!', error)
-                      error => this.errorMsg = error.statusText
+                      error => {this.errorMsg = error.statusText;
+                        if(this.errorMsg == "OK"){
+                        this.retrieveEntry();
+                        }
+                        else{
+                          this.errorMsg = error.statusText;
+                        }
+                      }
                     );
                   }
                   else{
@@ -90,7 +114,21 @@ export class AppComponent {
                   }
         }
       );
-    
   }
 
+  retrieveEntry(){
+    let headers = new Headers();
+    // headers.append('Content-Type', 'multipart/form-data');
+    var parameters= "";
+    this._apiCallsService.retrieveEntry(parameters, headers).
+    subscribe(
+      // response => console.log('Success!', response),
+      response => this.retrievedData = response,
+      // error => console.log('Error!', error)
+      // error => this.errorMsg = error.statusText,
+    );
+    // alert(this.errorMsg);
+    // this.errorMsg = "Success";
+  }
+  // retrievedData
 }

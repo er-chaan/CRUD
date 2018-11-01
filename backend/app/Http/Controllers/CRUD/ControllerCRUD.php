@@ -28,7 +28,7 @@ class ControllerCRUD extends Controller
         }
         $photo = $request->input("photo");
         $status = "active";
-        DB::table('CRUD.users')->insertGetId(
+        $query = DB::table('CRUD.users')->insertGetId(
             ['fullName'=>$fullName,
             'sex'=>$sex,
             'birthDate'=>$birthDate,
@@ -38,7 +38,17 @@ class ControllerCRUD extends Controller
             'skills'=>$skillsSet,
             'photo'=>time().'_'.$photo,
             'status'=>$status]);
-        return "success";
+        if($query){
+            return "success";
+        }
+        else{
+            return false;
+        }
+      }
+      public function retrieveEntry(Request $request){
+        $sql = "SELECT * FROM CRUD.users order by id DESC";
+        $result = DB::select($sql);
+        return $result;
       }
       public function uploadImage(Request $request){
         if ($request->hasFile('photo')) {

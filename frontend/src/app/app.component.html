@@ -14,7 +14,7 @@
       <div class="alert alert-danger" *ngIf="errorMsg != 'OK' && errorMsg != 'x'">
         {{errorMsg}}
       </div>
-      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="registrationForm" (ngSubmit)="createEntry()">
         <div class="form-group">
           <label for="fullName">Full name:  </label>
           <input [class.is-invalid]="fullName.invalid && fullName.touched" formControlName="fullName" type="text" class="form-control" required>
@@ -124,7 +124,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr *ngFor="let data of retrievedData">
+              <td>{{data.id}}</td>
+            <td>{{data.fullName}}</td>
+            <td>{{data.sex}}</td>
+            <td>{{data.birthDate}}</td>
+            <td>{{data.email}}</td>
+            <td>{{data.mobile}}</td>
+            <td>{{data.continent}}</td>
+            <td>{{data.skills}}</td>
+            <td>{{data.photo}}</td>
+            <td>Action</td>
           </tr>
         </tbody>
       </table>

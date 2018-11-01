@@ -20,6 +20,7 @@ $router->group(['namespace' => 'CRUD'], function() use ($router){
     // $router->get('getAPICallTracker','APICallTrackerController@getAPICallTracker');
     // $router->get('changeAPICallSignal/{id}/{signal}/','APICallTrackerController@changeAPICallSignal');
     $router->post('createEntry','ControllerCRUD@createEntry');
+    $router->get('retrieveEntry','ControllerCRUD@retrieveEntry');
     $router->post('uploadImage','ControllerCRUD@uploadImage');
     // APICallTracker ends
 });

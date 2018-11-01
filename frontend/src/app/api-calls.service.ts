@@ -16,6 +16,10 @@ export class ApiCallsService {
     return this._http.post<any>(this._url+"createEntry", userData, {headers: headers})
             .pipe(catchError(this.errorHandler));
   }
+  retrieveEntry(userData, headers) {
+    return this._http.get<any>(this._url+"retrieveEntry",{headers: headers})
+            .pipe(catchError(this.errorHandler));
+  }
   uploadImage(userData, headers) {
     return this._http.post<any>(this._url+"uploadImage", userData, {headers: headers})
             .pipe(catchError(this.errorHandler));
