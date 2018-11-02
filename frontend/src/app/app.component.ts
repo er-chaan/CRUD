@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgModule } from '@angular/core';
-// import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Http, Headers } from '@angular/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ApiCallsService } from './api-calls.service';
+import { environment } from '../environments/environment';
 declare var jquery:any;
 declare var $ :any;
 
@@ -15,6 +16,7 @@ declare var $ :any;
 
 export class AppComponent {
 
+  apiUrl = environment.apiUrl;
   errorMsg = 'x';
   public retrievedData = [];
   // retrievedData:any;
@@ -56,6 +58,8 @@ export class AppComponent {
   get photo() {
     return this.registrationForm.get('photo');
   }
+  selectedFile = null;
+  newFileName = null;
 
   registrationForm = this.fb.group({
     fullName: ['', [Validators.required, Validators.minLength(8)]],
@@ -72,8 +76,6 @@ export class AppComponent {
     }),
     photo: ['', [Validators.required, Validators.pattern('([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.jpeg)$')]]
   });
- 
-  selectedFile = null;
 
   formReset(){
     this.registrationForm.reset();
@@ -90,12 +92,16 @@ export class AppComponent {
     //   this.registrationForm.get("photo").setValue("");
     //   return false;
     // }
+    // this.newFileName = Math.floor(Math.random() * 9999999999)+".jpg";
+    // this.registrationForm.patchValue({"photo":this.newFileName});
   }
 
   createEntry() {
+    // alert(this.registrationForm.get("photo").value);
     let inputFile = new FormData(); 
     let headers = new Headers();
     headers.append('Content-Type', 'multipart/form-data');
+    // inputFile.append('photo', this.selectedFile, this.newFileName);
     inputFile.append('photo', this.selectedFile);
       this._apiCallsService.uploadImage(inputFile, headers).
       subscribe(

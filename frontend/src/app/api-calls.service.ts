@@ -3,13 +3,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Http, Headers } from '@angular/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiCallsService {
 
-  _url = "http://localhost:8000/";
+  _url = environment.apiUrl;
   constructor(private _http: HttpClient) { }
 
   createEntry(userData, headers) {

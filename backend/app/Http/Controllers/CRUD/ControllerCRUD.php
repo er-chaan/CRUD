@@ -5,6 +5,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+// use League\Flysystem\Filesystem;
+// use League\Flysystem\Adapter\Local;
 use DB;
 use Validator;
 
@@ -52,7 +56,7 @@ class ControllerCRUD extends Controller
                     'mobile'=>$mobile,
                     'continent'=>$continent,
                     'skills'=>$skillsSet,
-                    'photo'=>time().'_'.$photo,
+                    'photo'=>$photo,
                     'status'=>$status]);
                     return "success";
               } catch(\Illuminate\Database\QueryException $ex){ 
@@ -77,8 +81,8 @@ class ControllerCRUD extends Controller
         if (!$validator->fails()) {
             try{if ($request->hasFile('photo')) {
                 $image = $request->file('photo');
-                $name = time().'_'.$request->file("photo")->getClientOriginalName();
-                $destinationPath = storage_path('/app/images');
+                $name = $request->file("photo")->getClientOriginalName();
+                $destinationPath = base_path()."/public/images/";
                 $image->move($destinationPath, $name);
                 return "success";
             }}
