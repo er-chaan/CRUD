@@ -77,6 +77,7 @@ export class AppComponent {
 
   formReset(){
     this.registrationForm.reset();
+    this.errorMsg = 'x';
   }
 
 
