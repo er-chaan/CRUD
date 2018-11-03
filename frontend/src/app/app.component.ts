@@ -21,6 +21,7 @@ export class AppComponent {
   public apiToken = 'x';
   public retrievedData = [];
   public registrationForm:any;
+  public timer:any;
 
   constructor(private fb:FormBuilder, private _apiCallsService: ApiCallsService){}
 
@@ -80,7 +81,9 @@ export class AppComponent {
 
   formReset(){
     this.registrationForm.reset();
-    this.errorMsg = 'x';
+    this.timer = setInterval(() => {
+        this.errorMsg = 'x';
+   }, 5000);
   }
 
   onFileSelected(event){
