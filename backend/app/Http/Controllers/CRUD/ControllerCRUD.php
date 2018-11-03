@@ -26,6 +26,7 @@ class ControllerCRUD extends Controller
             'mobile' => 'required',
             'continent' => 'required',
             'photo' => 'required',
+            'photoID' => 'required',
         ]);
         if ($validator->fails()) {
             echo $validator->errors();
@@ -46,7 +47,7 @@ class ControllerCRUD extends Controller
                         $skillsSet .= $key.",";
                     }
                 }
-                $photo = $request->input("photo");
+                $photo = $request->input("photoID");
                 $status = "active";
                 $query = DB::table('CRUD.users')->insertGetId(
                     ['fullName'=>$fullName,

@@ -16,14 +16,31 @@ declare var $ :any;
 
 export class AppComponent {
 
-  apiUrl = environment.apiUrl;
-  errorMsg = 'x';
+  public apiUrl = environment.apiUrl;
+  public errorMsg = 'x';
+  public apiToken = 'x';
   public retrievedData = [];
-  // retrievedData:any;
+  public registrationForm:any;
 
   constructor(private fb:FormBuilder, private _apiCallsService: ApiCallsService){}
 
   ngOnInit() {
+    this.registrationForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(8)]],
+      sex: ['', Validators.required],
+      birthDate: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$') ] ],
+      mobile: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')] ],
+      continent: ['', Validators.required],
+      skills: this.fb.group({
+        FullStack: [false],
+        JokerEngineer: [false],
+        SDLC: [false],
+        OpenSource: [false]
+      }),
+      photo: ['', [Validators.required, Validators.pattern('([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.jpeg)$')]],
+      photoID: ['']
+    });
     this.retrieveEntry();
   //   this.loaderTrigger = true;
   //   this.getPastProcessedMetadata();
@@ -61,48 +78,23 @@ export class AppComponent {
   selectedFile = null;
   newFileName = null;
 
-  registrationForm = this.fb.group({
-    fullName: ['', [Validators.required, Validators.minLength(8)]],
-    sex: ['', Validators.required],
-    birthDate: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$') ] ],
-    mobile: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')] ],
-    continent: ['', Validators.required],
-    skills: this.fb.group({
-      FullStack: [false],
-      JokerEngineer: [false],
-      SDLC: [false],
-      OpenSource: [false]
-    }),
-    photo: ['', [Validators.required, Validators.pattern('([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.jpeg)$')]]
-  });
-
   formReset(){
     this.registrationForm.reset();
     this.errorMsg = 'x';
   }
 
-
   onFileSelected(event){
     this.selectedFile = event.target.files[0];
-    // var ext = this.registrationForm.get("photo").value.split('.').pop();
-    // if(ext == "jpeg" || ext == "jpg" || ext == "png"){
-    //   return true;
-    // }else{
-    //   this.registrationForm.get("photo").setValue("");
-    //   return false;
-    // }
-    // this.newFileName = Math.floor(Math.random() * 9999999999)+".jpg";
-    // this.registrationForm.patchValue({"photo":this.newFileName});
   }
 
   createEntry() {
-    // alert(this.registrationForm.get("photo").value);
+    this.newFileName = Math.floor(Math.random() * 9999999999)+".jpg";
+    this.registrationForm.patchValue({ photoID: String(this.newFileName) });
     let inputFile = new FormData(); 
     let headers = new Headers();
     headers.append('Content-Type', 'multipart/form-data');
-    // inputFile.append('photo', this.selectedFile, this.newFileName);
-    inputFile.append('photo', this.selectedFile);
+    headers.append('apiToken', this.apiToken);
+    inputFile.append('photo', this.selectedFile, this.newFileName);
       this._apiCallsService.uploadImage(inputFile, headers).
       subscribe(
         response => console.log('Success!', response),
@@ -116,6 +108,7 @@ export class AppComponent {
                       error => {this.errorMsg = error.statusText;
                         if(this.errorMsg == "OK"){
                         this.retrieveEntry();
+                        this.formReset();
                         }
                         else{
                           this.errorMsg = error.statusText;
@@ -132,17 +125,14 @@ export class AppComponent {
 
   retrieveEntry(){
     let headers = new Headers();
-    // headers.append('Content-Type', 'multipart/form-data');
+    headers.append('apiToken', this.apiToken);
     var parameters= "";
     this._apiCallsService.retrieveEntry(parameters, headers).
     subscribe(
       // response => console.log('Success!', response),
       response => this.retrievedData = response,
       // error => console.log('Error!', error)
-      // error => this.errorMsg = error.statusText,
+      error => this.errorMsg = error.statusText,
     );
-    // alert(this.errorMsg);
-    // this.errorMsg = "Success";
   }
-  // retrievedData
 }
