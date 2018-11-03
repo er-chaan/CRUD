@@ -124,8 +124,9 @@
           </tr>
         </thead>
         <tbody>
+          <tr *ngIf="retrievedData.length < 1"><td colspan="10">No Data Available</td></tr>
           <tr *ngFor="let data of retrievedData">
-              <td>{{data.id}}</td>
+            <td>{{data.id}}</td>
             <td>{{data.fullName}}</td>
             <td>{{data.sex}}</td>
             <td>{{data.birthDate}}</td>
