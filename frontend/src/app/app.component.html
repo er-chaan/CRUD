@@ -18,7 +18,7 @@
   </div>
   <div class="row">
     <div class="col-sm-2">
-      <form [formGroup]="registrationForm" (ngSubmit)="createEntry()">
+      <form novalidate [formGroup]="registrationForm" (ngSubmit)="createEntry()">
         <div class="form-group">
           <label for="fullName">Full name:  </label>
           <input [class.is-invalid]="fullName.invalid && fullName.touched" formControlName="fullName" type="text" class="form-control" required>
