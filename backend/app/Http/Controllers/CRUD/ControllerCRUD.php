@@ -59,10 +59,12 @@ class ControllerCRUD extends Controller
                     'skills'=>$skillsSet,
                     'photo'=>$photo,
                     'status'=>$status]);
-                    return "success";
+                    $response = response("success", 200);
+                    return $response;
               } catch(\Illuminate\Database\QueryException $ex){ 
                 echo $ex->getMessage();
-                return $response->$ex->getMessage();
+                $response = response($response->$ex->getMessage(), 307);
+                return $response;
               }
         }
       }
@@ -75,11 +77,25 @@ class ControllerCRUD extends Controller
 
       }
       public function deleteEntry($id, Request $request,Response $response){
-        // $sql = "SELECT * FROM CRUD.users order by id DESC";
-        // $result = DB::select($sql);
-        // return $result;
-        $response = response($id, 200);
-        return $response;
+        try{
+            $photo = DB::table('users')->where('id', $id)->value('photo');
+            $photo = base_path()."/public/images/".$photo;
+            if(unlink($photo)){
+                $sql = "DELETE FROM CRUD.users WHERE id=".$id."";
+                DB::select($sql);
+                $response = response("success", 200);
+                return $response;
+            }
+            else{
+                $response = response("failed", 200);
+                return $response;
+            }
+        }
+        catch(\Illuminate\Database\QueryException $ex){ 
+            echo $ex->getMessage();
+            $response = response($response->$ex->getMessage(), 307);
+            return $response;
+        }
       }
       public function uploadImage(Request $request, Response $response){
         $validator = Validator::make($request->all(), [
@@ -95,11 +111,13 @@ class ControllerCRUD extends Controller
                 $name = $request->file("photo")->getClientOriginalName();
                 $destinationPath = base_path()."/public/images/";
                 $image->move($destinationPath, $name);
-                return "success";
+                $response = response("success", 200);
+                return $response;
             }}
             catch(\Illuminate\Database\QueryException $ex){ 
                 echo $ex->getMessage();
-                return $response->$ex->getMessage();
+                $response = response($response->$ex->getMessage(), 307);
+                return $response;
               }
         }
       }

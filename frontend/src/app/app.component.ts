@@ -141,9 +141,20 @@ export class AppComponent {
     this._apiCallsService.deleteEntry(parameters, this.headers).
     subscribe(
       // response => console.log('Success!', response),
-      response => this.retrievedData = response,
+      response => {
+        if(response == "success"){
+          this.retrieveEntry();
+        } },
       // error => console.log('Error!', error)
-      error => this.errorMsg = error.statusText,
+      // error => this.errorMsg = error.statusText,
+      error => {this.errorMsg = error.statusText;
+        if(this.errorMsg == "OK"){
+          this.retrieveEntry();
+        }
+        else{
+          this.errorMsg = error.statusText;
+        }
+      }
     );
   }
 
