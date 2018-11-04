@@ -71,6 +71,16 @@ class ControllerCRUD extends Controller
         $result = DB::select($sql);
         return $result;
       }
+      public function updateEntry(Request $request,Response $response){
+
+      }
+      public function deleteEntry($id, Request $request,Response $response){
+        // $sql = "SELECT * FROM CRUD.users order by id DESC";
+        // $result = DB::select($sql);
+        // return $result;
+        $response = response($id, 200);
+        return $response;
+      }
       public function uploadImage(Request $request, Response $response){
         $validator = Validator::make($request->all(), [
             'photo' => 'required|image|mimes:jpg,jpeg,png|max:2048|min:1',

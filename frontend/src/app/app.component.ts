@@ -22,7 +22,9 @@ export class AppComponent {
   public retrievedData = [];
   public registrationForm:any;
   public timer:any;
-
+  public selectedFile = null;
+  public newFileName = null;
+  public headers = new Headers();
   constructor(private fb:FormBuilder, private _apiCallsService: ApiCallsService){}
 
   ngOnInit() {
@@ -42,6 +44,7 @@ export class AppComponent {
       photo: ['', [Validators.required, Validators.pattern('([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.jpeg)$')]],
       photoID: ['']
     });
+    this.headers.append('apiToken', this.apiToken);
     this.retrieveEntry();
   //   this.loaderTrigger = true;
   //   this.getPastProcessedMetadata();
@@ -76,14 +79,12 @@ export class AppComponent {
   get photo() {
     return this.registrationForm.get('photo');
   }
-  selectedFile = null;
-  newFileName = null;
 
   formReset(){
     this.registrationForm.reset();
     this.timer = setInterval(() => {
         this.errorMsg = 'x';
-   }, 5000);
+   }, 10000);
   }
 
   onFileSelected(event){
@@ -94,17 +95,15 @@ export class AppComponent {
     this.newFileName = Math.floor(Math.random() * 9999999999)+".jpg";
     this.registrationForm.patchValue({ photoID: String(this.newFileName) });
     let inputFile = new FormData(); 
-    let headers = new Headers();
-    headers.append('Content-Type', 'multipart/form-data');
-    headers.append('apiToken', this.apiToken);
+    this.headers.append('Content-Type', 'multipart/form-data');
     inputFile.append('photo', this.selectedFile, this.newFileName);
-      this._apiCallsService.uploadImage(inputFile, headers).
+      this._apiCallsService.uploadImage(inputFile, this.headers).
       subscribe(
         response => console.log('Success!', response),
         // error => console.log('Error!', error),
         error => {this.errorMsg = error.statusText;
                   if(this.errorMsg == "OK"){
-                    this._apiCallsService.createEntry(this.registrationForm.value, headers).
+                    this._apiCallsService.createEntry(this.registrationForm.value, this.headers).
                     subscribe(
                       response => console.log('Success!', response),
                       // error => console.log('Error!', error)
@@ -127,10 +126,8 @@ export class AppComponent {
   }
 
   retrieveEntry(){
-    let headers = new Headers();
-    headers.append('apiToken', this.apiToken);
     var parameters= "";
-    this._apiCallsService.retrieveEntry(parameters, headers).
+    this._apiCallsService.retrieveEntry(parameters, this.headers).
     subscribe(
       // response => console.log('Success!', response),
       response => this.retrievedData = response,
@@ -138,4 +135,16 @@ export class AppComponent {
       error => this.errorMsg = error.statusText,
     );
   }
+
+  deleteEntry(id){
+    var parameters= id;
+    this._apiCallsService.deleteEntry(parameters, this.headers).
+    subscribe(
+      // response => console.log('Success!', response),
+      response => this.retrievedData = response,
+      // error => console.log('Error!', error)
+      error => this.errorMsg = error.statusText,
+    );
+  }
+
 }

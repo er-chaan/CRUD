@@ -15,8 +15,8 @@ class OauthMiddleware
      */
     public function handle($request, Closure $next)
     {
-        // $allowedDomains = array("http://localhost:4200");
-        $allowedDomains = array("http://localhost:4200","");
+        $allowedDomains = array("http://localhost:4200");
+        // $allowedDomains = array("http://localhost:4200","");
         $origin = $request->server('HTTP_ORIGIN');
         if(in_array($origin, $allowedDomains)){
             if($request->isMethod('OPTIONS')) {
