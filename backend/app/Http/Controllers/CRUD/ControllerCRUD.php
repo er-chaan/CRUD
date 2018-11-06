@@ -68,21 +68,38 @@ class ControllerCRUD extends Controller
               }
         }
       }
-      public function retrieveEntry(Request $request, Response $response){
-        $sql = "SELECT * FROM CRUD.users order by id DESC";
-        $result = DB::select($sql);
-        return $result;
+      public function retrieveEntry($id, Request $request, Response $response){
+        try{
+            if($id == 0){
+                // return "i am here";
+                //  $sql = "SELECT * FROM CRUD.users order by id DESC";
+                 $result = DB::table('CRUD.users')->get();
+            }
+            if($id != 0){
+                // return "i am here edit";
+                // $sql = "SELECT * FROM CRUD.users WHERE id=".$id."";
+                $result = DB::table('CRUD.users')->where('id', $id)->get();
+            }
+            // $result = DB::select($sql);
+            return $result;
+        }
+        catch(\Illuminate\Database\QueryException $ex){ 
+            echo $ex->getMessage();
+            $response = response($response->$ex->getMessage(), 307);
+            return $response;
+        }
       }
       public function updateEntry(Request $request,Response $response){
 
       }
       public function deleteEntry($id, Request $request,Response $response){
         try{
-            $photo = DB::table('users')->where('id', $id)->value('photo');
+            $photo = DB::table('CRUD.users')->where('id', $id)->value('photo');
             $photo = base_path()."/public/images/".$photo;
             if(unlink($photo)){
-                $sql = "DELETE FROM CRUD.users WHERE id=".$id."";
-                DB::select($sql);
+                // $sql = "DELETE FROM CRUD.users WHERE id=".$id."";
+                // DB::select($sql);
+                DB::table('CRUD.users')->where('id', $id)->delete();
                 $response = response("success", 200);
                 return $response;
             }

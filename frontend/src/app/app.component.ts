@@ -125,12 +125,46 @@ export class AppComponent {
       );
   }
 
-  retrieveEntry(){
-    var parameters= "";
+  retrieveEntry(id=0){
+    var parameters= id;
     this._apiCallsService.retrieveEntry(parameters, this.headers).
     subscribe(
       // response => console.log('Success!', response),
-      response => this.retrievedData = response,
+      response => {
+        if(id==0){
+          this.retrievedData = response;
+        }
+        if(id!=0){
+          var skillsArray = response[0].skills.split(",");
+          // console.log($.inArray("FullStackss", skillsArray))
+          var FullStackValue = true;
+          if(skillsArray.indexOf("FullStack") == -1){FullStackValue=false;}
+          var JokerEngineerValue = true;
+          if(skillsArray.indexOf("JokerEngineer") == -1){JokerEngineerValue=false;}
+          var SDLCValue = true;
+          if(skillsArray.indexOf("SDLC") == -1){SDLCValue=false;}
+          var OpenSourceValue = true;
+          if(skillsArray.indexOf("OpenSource") == -1){OpenSourceValue=false;}
+          this.formReset();
+          this.registrationForm = this.fb.group({
+            fullName: [response[0].fullName, [Validators.required, Validators.minLength(8)]],
+            sex: [response[0].sex, Validators.required],
+            birthDate: [response[0].birthDate, Validators.required],
+            email: [response[0].email, [Validators.required, Validators.email, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$') ] ],
+            mobile: [response[0].mobile, [Validators.required, Validators.pattern('^[0-9]{10}$')] ],
+            continent: [response[0].continent, Validators.required],
+            skills: this.fb.group({
+              FullStack: [FullStackValue],
+              JokerEngineer: [JokerEngineerValue],
+              SDLC: [SDLCValue],
+              OpenSource: [OpenSourceValue]
+            }),
+            photo: [response[0].photo, [Validators.required, Validators.pattern('([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.jpeg)$')]],
+            photoID: [response[0].photo]
+          });
+          // this.retrievedData = response;
+        }
+      },
       // error => console.log('Error!', error)
       error => this.errorMsg = error.statusText,
     );
