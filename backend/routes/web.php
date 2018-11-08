@@ -17,8 +17,6 @@ $router->get('/', function () use ($router) {
 
 $router->group(['namespace' => 'CRUD'], function() use ($router){
     // APICallTracker starts
-    // $router->get('getAPICallTracker','APICallTrackerController@getAPICallTracker');
-    // $router->get('changeAPICallSignal/{id}/{signal}/','APICallTrackerController@changeAPICallSignal');
     $router->post('createEntry','ControllerCRUD@createEntry');
     $router->get('retrieveEntry/{id}','ControllerCRUD@retrieveEntry');
     $router->patch('updateEntry','ControllerCRUD@updateEntry');
