@@ -5,6 +5,7 @@ import { Http, Headers } from '@angular/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ApiCallsService } from './api-calls.service';
 import { environment } from '../environments/environment';
+import { CompileTemplateMetadata } from '@angular/compiler';
 declare var jquery:any;
 declare var $ :any;
 
@@ -17,17 +18,24 @@ declare var $ :any;
 export class AppComponent {
 
   public apiUrl = environment.apiUrl;
-  public errorMsg = 'x';
-  public apiToken = 'x';
+  public errorMsg:any;
+  public apiToken:any;
   public retrievedData = [];
   public registrationForm:any;
   public timer:any;
-  public selectedFile = null;
-  public newFileName = null;
-  public headers = new Headers();
-  constructor(private fb:FormBuilder, private _apiCallsService: ApiCallsService){}
+  public selectedFile:any;
+  public newFileName:any;
+  public isEdit:boolean;
+  public headers:any;
 
+  constructor(private fb:FormBuilder, private _apiCallsService: ApiCallsService){}
   ngOnInit() {
+    this.errorMsg = 'x';
+    this.apiToken = 'x';
+    this.isEdit = false;
+    this.headers = new Headers();
+    this.selectedFile = null;
+    this.newFileName = null;
     this.registrationForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(8)]],
       sex: ['', Validators.required],
@@ -81,6 +89,8 @@ export class AppComponent {
   }
 
   formReset(){
+    // $('#form_id').trigger("reset");
+    this.isEdit = false;
     this.registrationForm.reset();
     this.timer = setInterval(() => {
         this.errorMsg = 'x';
@@ -131,10 +141,12 @@ export class AppComponent {
     subscribe(
       // response => console.log('Success!', response),
       response => {
-        if(id==0){
+        if(id == 0){
+          this.isEdit = false;
           this.retrievedData = response;
         }
-        if(id!=0){
+        if(id != 0){
+          this.isEdit = true;
           var skillsArray = response[0].skills.split(",");
           // console.log($.inArray("FullStackss", skillsArray))
           var FullStackValue = true;
@@ -160,7 +172,8 @@ export class AppComponent {
               OpenSource: [OpenSourceValue]
             }),
             photo: [response[0].photo, [Validators.required, Validators.pattern('([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.jpeg)$')]],
-            photoID: [response[0].photo]
+            photoID: [response[0].photo],
+            id: [response[0].id]
           });
           // this.retrievedData = response;
         }

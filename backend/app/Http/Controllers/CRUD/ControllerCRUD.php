@@ -48,8 +48,9 @@ class ControllerCRUD extends Controller
                     }
                 }
                 $photo = $request->input("photoID");
-                $status = "active";
-                $query = DB::table('CRUD.users')->insertGetId(
+                if(!$request->input("id")){
+                    $status = "created";
+                    $query = DB::table('CRUD.users')->insertGetId(
                     ['fullName'=>$fullName,
                     'sex'=>$sex,
                     'birthDate'=>$birthDate,
@@ -59,8 +60,23 @@ class ControllerCRUD extends Controller
                     'skills'=>$skillsSet,
                     'photo'=>$photo,
                     'status'=>$status]);
-                    $response = response("success", 200);
-                    return $response;
+                }
+                if($request->input("id")){
+                    $id = $request->input("id");
+                    $status = "updated";
+                    $query = DB::table('CRUD.users')->where('id', $id)->update(
+                        ['fullName'=>$fullName,
+                        'sex'=>$sex,
+                        'birthDate'=>$birthDate,
+                        'email'=>$email,
+                        'mobile'=>$mobile,
+                        'continent'=>$continent,
+                        'skills'=>$skillsSet,
+                        'photo'=>$photo,
+                        'status'=>$status]);
+                }
+                $response = response("success", 200);
+                return $response;
               } catch(\Illuminate\Database\QueryException $ex){ 
                 echo $ex->getMessage();
                 $response = response($response->$ex->getMessage(), 307);
