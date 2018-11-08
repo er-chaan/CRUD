@@ -27,6 +27,7 @@ export class AppComponent {
   public newFileName:any;
   public isEdit:boolean;
   public headers:any;
+  public interval:any;
 
   constructor(private fb:FormBuilder, private _apiCallsService: ApiCallsService){}
   ngOnInit() {
@@ -54,16 +55,13 @@ export class AppComponent {
     });
     this.headers.append('apiToken', this.apiToken);
     this.retrieveEntry();
-  //   this.loaderTrigger = true;
-  //   this.getPastProcessedMetadata();
-  //   this.getCurrentlyProcessingMetadata();
-  //   this.getKeysModalValues();
-  //   // this.loaderTrigger = false;
-  //   this.interval = setInterval(() => {
-  //       if(window.location.pathname == "/meta-data-reports"){
-  //           this.getCurrentlyProcessingMetadata();
-  //       }
-  //  }, 5000);
+    
+    // this.loaderTrigger = false;
+    this.interval = setInterval(() => {
+        if(window.location.pathname == "/"){
+            this.retrieveEntry();
+        }
+   }, 5000);
 }
 
   get fullName() {
